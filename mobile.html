@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>SKS Spaces 使用手冊（手機版）V1.3</title>
+  <style>
+    :root {
+      --brand: #1565C0;
+      --brand-dark: #0D47A1;
+      --brand-light: #E3F2FD;
+      --bg: #F0F2F5;
+      --surface: #ffffff;
+      --border: #DEE2E6;
+      --text: #1A1A2E;
+      --text-muted: #6C757D;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Microsoft JhengHei", sans-serif; font-size: 17px; color: var(--text); background: var(--bg); line-height: 1.8; }
+
+    /* ── Top header ── */
+    .top-bar { background: var(--brand); color: white; padding: 14px 16px 10px; position: sticky; top: 0; z-index: 100; }
+    .top-bar-title { font-size: 18px; font-weight: 800; }
+    .top-bar-sub { font-size: 12px; opacity: 0.75; margin-top: 1px; }
+
+    /* ── Search ── */
+    .search-bar { background: var(--surface); padding: 10px 14px; border-bottom: 1px solid var(--border); position: sticky; top: 56px; z-index: 99; }
+    .search-input { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: 24px; font-size: 16px; outline: none; font-family: inherit; background: #F5F7FA; }
+    .search-input:focus { border-color: var(--brand); background: white; }
+
+    /* ── Chapter nav tabs ── */
+    .chapter-nav { background: var(--surface); border-bottom: 1px solid var(--border); overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; padding: 8px 14px; display: flex; gap: 7px; position: sticky; top: 108px; z-index: 98; scrollbar-width: none; }
+    .chapter-nav::-webkit-scrollbar { display: none; }
+    .chapter-nav a { display: inline-flex; align-items: center; padding: 5px 13px; border-radius: 20px; background: var(--brand-light); color: var(--brand); text-decoration: none; font-size: 13px; font-weight: 700; flex-shrink: 0; border: 1.5px solid transparent; }
+    .chapter-nav a.active { background: var(--brand); color: white; }
+
+    /* ── No result ── */
+    .search-no-result { display: none; padding: 32px 16px; text-align: center; color: var(--text-muted); font-size: 16px; background: var(--surface); margin: 10px; border-radius: 12px; }
+
+    /* ── Chapter accordion ── */
+    .chapter { background: var(--surface); margin: 10px; border-radius: 14px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+    .chapter-header { display: flex; align-items: center; gap: 12px; padding: 15px 16px; cursor: pointer; background: var(--surface); border: none; width: 100%; text-align: left; -webkit-user-select: none; user-select: none; }
+    .chapter-header:active { background: var(--brand-light); }
+    .ch-num { background: var(--brand); color: white; font-size: 13px; font-weight: 800; min-width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .ch-title { font-size: 18px; font-weight: 700; flex: 1; line-height: 1.3; }
+    .ch-arrow { font-size: 16px; color: var(--text-muted); transition: transform 0.22s; flex-shrink: 0; }
+    .chapter.open .ch-arrow { transform: rotate(180deg); }
+    .chapter-body { display: none; padding: 4px 16px 20px; border-top: 1px solid var(--border); }
+    .chapter.open .chapter-body { display: block; }
+
+    /* ── Typography ── */
+    h3 { font-size: 17px; font-weight: 700; margin: 18px 0 10px; color: var(--brand-dark); }
+    h3:first-child { margin-top: 14px; }
+    p { margin-bottom: 11px; }
+    ul, ol { padding-left: 22px; margin-bottom: 12px; }
+    li { margin-bottom: 7px; }
+    strong { font-weight: 700; }
+
+    /* ── Steps ── */
+    .steps { list-style: none; padding: 0; counter-reset: step; margin-bottom: 12px; }
+    .steps li { counter-increment: step; display: flex; gap: 12px; margin-bottom: 10px; align-items: flex-start; }
+    .steps li::before { content: counter(step); background: var(--brand); color: white; min-width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+
+    /* ── Images ── */
+    .img-block { margin: 14px 0; text-align: center; }
+    .img-block img { max-width: 100%; border-radius: 10px; border: 1px solid var(--border); box-shadow: 0 2px 8px rgba(0,0,0,0.08); display: block; margin: 0 auto; }
+    .img-block.phone-2 img { max-width: 320px; }
+    .img-block.phone-1 img { max-width: 200px; }
+    .img-block.phone-3 img { max-width: 100%; }
+    .img-block.hw img { max-width: 100%; border-radius: 8px; }
+    .img-cap { font-size: 13px; color: var(--text-muted); margin-top: 6px; }
+
+    /* ── Callout ── */
+    .callout { border-radius: 9px; padding: 12px 14px; margin: 12px 0; display: flex; gap: 10px; align-items: flex-start; }
+    .callout-tip { background: #E8F5E9; border-left: 4px solid #388E3C; }
+    .callout-warning { background: #FFF8E1; border-left: 4px solid #F9A825; }
+    .callout-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+    .callout-body { font-size: 16px; line-height: 1.7; }
+
+    /* ── Table ── */
+    .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 10px 0; border-radius: 8px; }
+    table { width: 100%; border-collapse: collapse; font-size: 15px; min-width: 260px; }
+    th { background: var(--brand); color: white; font-weight: 600; text-align: left; padding: 9px 12px; }
+    td { padding: 9px 12px; border-bottom: 1px solid var(--border); }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: #F8F9FA; }
+
+    /* ── Badge ── */
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 13px; font-weight: 600; }
+    .badge-green { background: #E8F5E9; color: #2E7D32; }
+    .badge-gray  { background: #F5F5F5; color: #555; }
+    .badge-red   { background: #FCE4EC; color: #C62828; }
+
+    /* ── Hardware grid ── */
+    .hw-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 10px 0; }
+    .hw-card { background: #F5F7FA; border: 1px solid var(--border); border-radius: 10px; padding: 13px; }
+    .hw-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; color: var(--brand-dark); }
+    .hw-card .hw-meta { font-size: 12px; color: var(--text-muted); margin-bottom: 5px; }
+    .hw-card p { font-size: 13px; margin: 0; line-height: 1.5; }
+
+    /* ── FAQ ── */
+    .faq-card { background: #FFFDE7; border: 1px solid #FDD835; border-radius: 10px; padding: 13px 15px; margin-bottom: 10px; }
+    .faq-q { font-size: 16px; font-weight: 700; margin-bottom: 5px; color: #5D4037; }
+    .faq-cause { font-size: 13px; color: var(--text-muted); margin-bottom: 4px; }
+    .faq-fix { font-size: 15px; line-height: 1.6; }
+
+    /* ── Search highlight ── */
+    .highlight { background: #FFF176; border-radius: 2px; }
+
+    /* ── Footer ── */
+    .footer { padding: 20px 16px 40px; color: var(--text-muted); font-size: 13px; }
+    .footer p { margin-bottom: 4px; }
+
+    /* ── Section divider ── */
+    .section-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.12em; padding: 12px 16px 4px; }
+
+    @media (max-width: 380px) {
+      .hw-grid { grid-template-columns: 1fr; }
+      .ch-title { font-size: 17px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- 頂部標題 -->
+<div class="top-bar">
+  <div class="top-bar-title">SKS Spaces 使用手冊</div>
+  <div class="top-bar-sub">V1.3 &nbsp;·&nbsp; 新光保全 SKS RX 系列</div>
+</div>
+
+<!-- 搜尋列 -->
+<div class="search-bar">
+  <input class="search-input" type="search" placeholder="搜尋手冊內容…" id="searchInput" autocomplete="off">
+</div>
+
+<!-- 章節快速跳轉 -->
+<div class="chapter-nav" id="chapterNav">
+  <a href="#ch1" onclick="openChapter('ch1')">第1章</a>
+  <a href="#ch2" onclick="openChapter('ch2')">第2章</a>
+  <a href="#ch3" onclick="openChapter('ch3')">第3章</a>
+  <a href="#ch4" onclick="openChapter('ch4')">第4章</a>
+  <a href="#ch5" onclick="openChapter('ch5')">第5章</a>
+  <a href="#ch6" onclick="openChapter('ch6')">第6章</a>
+  <a href="#ch7" onclick="openChapter('ch7')">第7章</a>
+  <a href="#ch8" onclick="openChapter('ch8')">第8章</a>
+  <a href="#ch9" onclick="openChapter('ch9')">第9章</a>
+  <a href="#ch10" onclick="openChapter('ch10')">常見問題</a>
+</div>
+
+<!-- 主內容 -->
+<div id="manualContent">
+  <div class="search-no-result" id="noResult">找不到「<span id="searchKeyword"></span>」的相關內容</div>
+
+  <div class="section-label">快速開始</div>
+
+  <!-- ── 第1章 ── -->
+  <div class="chapter open" id="ch1">
+    <button class="chapter-header" onclick="toggleChapter(this)">
+      <div class="ch-num">1</div>
+      <div class="ch-title">APP 下載與帳號登入</div>
+      <div class="ch-arrow">▼</div>
+    </button>
+    <div class="chapter-body">
+      <h3>📲 下載安裝</h3>
+      <ul>
+        <li><strong>iOS</strong>：App Store 搜尋「SKS Spaces」→ 下載</li>
+        <li><strong>Android</strong>：Google Play 搜尋「SKS Spaces」→ 安裝</li>
+      </ul>
+      <h3>👤 首次使用：帳號註冊</h3>
+      <ol class="steps">
+        <li>開啟 APP，點擊登入頁下方「<strong>註冊</strong>」</li>
+        <li>填入用戶名稱、Email（或手機號碼）</li>
+        <li>設定密碼（8–12 位，含大小寫英文、數字及特殊符號）</li>
+        <li>再次輸入確認密碼 → 點擊「<strong>確認</strong>」</li>
+      </ol>
+      <div class="img-block phone-2">
+        <img src="images/app_image1.png" alt="登入頁與帳號註冊">
+        <div class="img-cap">左：登入頁　右：帳號註冊</div>
+      </div>
+      <h3>🔑 一般登入 / 忘記密碼</h3>
+      <ul>
+        <li>輸入帳號密碼 → 登入；或使用 Face ID / 指紋</li>
+        <li>忘記密碼：點「忘記密碼？」→ Email 驗證 → 重設密碼</li>
+      </ul>
+      <div class="callout callout-tip">
+        <span class="callout-icon">💡</span>
+        <div class="callout-body"><strong>契約用戶</strong>：帳號由工程人員建立，首次登入後請自行修改密碼。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 第2章 ── -->
+  <div class="chapter" id="ch2">
+    <button class="chapter-header" onclick="toggleChapter(this)">
+      <div class="ch-num">2</div>
+      <div class="ch-title">首頁功能導覽</div>
+      <div class="ch-arrow">▼</div>
+    </button>
+    <div class="chapter-body">
+      <div class="img-block phone-2">
+        <img src="images/app_image2.png" alt="首頁模組總覽">
+        <div class="img-cap">左：首頁模組　右：設備列表</div>
+      </div>
+      <h3>🧩 六大核心模組</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>模組</th><th>功能說明</th></tr>
+          <tr><td><strong>區域風險</strong></td><td>氣象局資料、天氣、地震警報</td></tr>
+          <tr><td><strong>近期事件</strong></td><td>警報即時通知、系統異常提示</td></tr>
+          <tr><td><strong>裝置小卡</strong></td><td>單一設備狀態（在線 / 離線 / 觸發）</td></tr>
+          <tr><td><strong>裝置列表</strong></td><td>所有已綁定設備總覽</td></tr>
+          <tr><td><strong>攝影機快播</strong></td><td>一鍵即時影像；橫向最多 4 路</td></tr>
+          <tr><td><strong>保全狀態</strong></td><td><span class="badge badge-green">綠</span> 啟動 &nbsp;<span class="badge badge-gray">灰</span> 解除 &nbsp;<span class="badge badge-red">紅</span> 警報</td></tr>
+        </table>
+      </div>
+      <h3>⚡ 頂部快捷按鈕（右上角）</h3>
+      <ul>
+        <li>⚙️ 設定 &nbsp;&nbsp; 📡 設備拓樸圖</li>
+        <li>🛡️ 授權管理 &nbsp;&nbsp; ➕ 新增設備</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-label">核心功能</div>
+
+  <!-- ── 第3章 ── -->
+  <div class="chapter" id="ch3">
+    <button class="chapter-header" onclick="toggleChapter(this)">
+      <div class="ch-num">3</div>
+      <div class="ch-title">保全操作</div>
+      <div class="ch-arrow">▼</div>
+    </button>
+    <div class="chapter-body">
+      <h3>🤚 手動操作</h3>
+      <p><strong>啟動分區保全</strong></p>
+      <ol class="steps">
+        <li>點擊首頁對應分區的<strong>灰色盾牌</strong>圖示</li>
+        <li>系統自動檢查條件（門磁關閉、感測器正常）</li>
+        <li>條件符合 → 盾牌轉<strong>綠色</strong>，保全啟動</li>
+        <li>條件不符 → 顯示設備清單，確認後重試</li>
+      </ol>
+      <p><strong>解除保全</strong>：點擊綠色盾牌 → 轉灰色</p>
+      <p><strong>解除警報</strong>：點擊紅色警示 → 恢復灰色</p>
+      <p><strong>全區操作</strong>：底部導覽 → 服務管理 → 全區設定 / 全區解除</p>
+      <div class="callout callout-warning">
+        <span class="callout-icon">⚠️</span>
+        <div class="callout-body">啟動前請確認所有門窗已關閉，否則系統提示無法啟動並列出未關閉設備。</div>
+      </div>
+      <h3>🕐 自動排程</h3>
+      <p>路徑：服務管理 → 生效中的排程 → 新增排程</p>
+      <div class="img-block phone-2">
+        <img src="images/app_image8.png" alt="保全排程設定">
+        <div class="img-cap">左：每日固定　右：每日獨立排程</div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>類型</th><th>適用情境</th></tr>
+          <tr><td><strong>每日固定</strong></td><td>每天相同時間啟動 / 解除，適合固定作息場域</td></tr>
+          <tr><td><strong>每日獨立</strong></td><td>各天不同時間，彈性對應各班表</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 第4章 ── -->
+  <div class="chapter" id="ch4">
+    <button class="chapter-header" onclick="toggleChapter(this)">
+      <div class="ch-num">4</div>
+      <div class="ch-title">攝影機監控與影像回放</div>
+      <div class="ch-arrow">▼</div>
+    </button>
+    <div class="chapter-body">
+      <h3>📺 即時影像</h3>
+      <ol class="steps">
+        <li>底部導覽 → <strong>影像管理</strong></li>
+        <li>點擊攝影機名稱 → 開啟單路即時影像</li>
+        <li>手機<strong>橫向旋轉</strong> → 最多同時 4 路顯示</li>
+        <li>長按卡片可拖曳調整排列順序</li>
+      </ol>
+      <h3>⏪ 影像回放</h3>
+      <ol class="steps">
+        <li>進入單一攝影機頁面 → 切換<strong>回放</strong>模式</li>
+        <li>時間軸拖曳選取時段</li>
+        <li>依事件篩選：人形偵測、移動偵測、門磁事件等</li>
+      </ol>
+      <div class="img-block phone-3">
+        <img src="images/app_image10.png" alt="攝影機監控與回放">
+        <div class="img-cap">左：影像管理　中：多路監視　右：影像回放</div>
+      </div>
+      <h3>💾 錄影規格</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>類型</th><th>天數</th><th>說明</th></tr>
+          <tr><td>全時錄影（SD 卡）</td><td>約 14 天</td><td>256GB Micro SD</td></tr>
+          <tr><td>事件錄影（雲端）</td><td>30 天</td><td>前 10 秒＋後 20 秒，max 300 筆</td></tr>
+          <tr><td>事件錄影（SD 卡）</td><td>滿後覆蓋</td><td>前 10 秒＋後 20 秒</td></tr>
+        </table>
+      </div>
+      <div class="callout callout-tip">
+        <span class="callout-icon">💡</span>
+        <div class="callout-body"><strong>雙重備援</strong>：雲端＋SD 卡同步，網路中斷仍持續錄影。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 第5章 ── -->
+  <div class="chapter" id="ch5">
+    <button class="chapter-header" onclick="toggleChapter(this)">
+      <div class="ch-num">5</div>
+      <div class="ch-title">日誌查詢</div>
+      <div class="ch-arrow">▼</div>
+    </button>
+    <div class="chapter-body">
+      <p>路徑：底部導覽列 → <strong>日誌管理</strong></p>
+      <div class="img-block phone-1">
+        <img src="images/app_image9.png" alt="日誌事件列表">
+        <div class="img-cap">日誌事件列表</div>
+      </div>
+      <h3>🔍 篩選選項</h3>
+      <ul>
+        <li>事件類型（警報 / 操作 / 狀態）</li>
+        <li>裝置類型（感測器 / 攝影機 / 主機）</li>
+        <li>日期範圍、操作者帳號</li>
+      </ul>
+      <h3>📋 讀取技巧</h3>
+      <ul>
+        <li>勾選「<strong>僅顯示保全事件</strong>」→ 快速聚焦警報紀錄</li>
+        <li>📷 圖示 → 點擊直接查看對應影像片段</li>
+        <li>⚠️ 保全事件高亮標示，一眼辨識</li>
+      </ul>
+      <h3>📌 紀錄內容</h3>
+      <ul>
+        <li>保全啟用 / 解除（含操作者與時間）</li>
+        <li>感測器觸發事件（設備名稱、時間、狀態）</li>
+        <li>攝影機人形 / 移動偵測影像</li>
+        <li>主機操作：備份、更新、網路切換</li>
+        <li>非法刷卡紀錄</li>
+      </ul>
+      <div class="callout callout-tip">
+        <span class="callout-icon">💡</span>
+        <div class="callout-body">日誌無資料時，先取消所有篩選條件並擴大日期範圍再查詢。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">設備管理</div>
+
+  <!-- ── 第6章 ── -->
+  <div class="chapter" id="ch6">
+    <button class="chapter-header" onclick="toggleChapter(this)">
+      <div class="ch-num">6</div>
+      <div class="ch-title">設備綁定</div>
+      <div class="ch-arrow">▼</div>
+    </button>
+    <div class="chapter-body">
+      <h3>🖥️ 新增主機</h3>
+      <ol class="steps">
+        <li>首頁右上角 → ＋（新增設備）</li>
+        <li>選「<strong>主機</strong>」→ 輸入序號或掃描背面 QR Code</li>
+        <li>設定名稱與地點，完成網路設定</li>
+      </ol>
+      <div class="img-block hw">
+        <img src="images/gwt_image1.png" alt="保全主機（GWT）外觀">
+        <div class="img-cap">保全主機（GWT）正面與接口說明</div>
+      </div>
+      <h3>📡 新增感測器</h3>
+      <ol class="steps">
+        <li>主機管理 → 新增感測器</li>
+        <li>安裝電池，掃描感測器 QR Code</li>
+        <li>設定名稱、分區、連動攝影機</li>
+        <li>等候約 1.5 分鐘，LED 停止閃爍即成功</li>
+      </ol>
+      <div class="img-block hw">
+        <img src="images/sds_image1.png" alt="門磁感測器（SDS）">
+        <div class="img-cap">門磁感測器（SDS）</div>
+      </div>
+      <h3>📷 新增攝影機（IPcam）</h3>
+      <ol class="steps">
+        <li>主機管理 → 新增攝影機</li>
+        <li>選連線方式（Wi-Fi 或 PoE）</li>
+        <li>依 APP 引導完成綁定</li>
+      </ol>
+      <h3>🔧 新增 WDI（有線無線轉換器）</h3>
+      <ol class="steps">
+        <li>接通 24V 電源</li>
+        <li>掃描 WDI QR Code</li>
+        <li>設定各乾接點對應的感測器名稱與分區</li>
+      </ol>
+      <div class="img-block hw">
+        <img src="images/swdi_image1.png" alt="WDI 有線無線轉換器">
+        <div class="img-cap">WDI 有線無線轉換器（8 路乾接點）</div>
+      </div>
+      <div class="callout callout-tip">
+        <span class="callout-icon">💡</span>
+        <div class="callout-body">QR Code 模糊時，開後蓋掃內蓋備用 QR Code。<br>首頁右上角 → 拓樸圖示，可視化查看所有設備架構。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 第7章 ── -->
+  <div class="chapter" id="ch7">
+    <button class="chapter-header" onclick="toggleChapter(this)">
+      <div class="ch-num">7</div>
+      <div class="ch-title">授權管理</div>
+      <div class="ch-arrow">▼</div>
+    </button>
+    <div class="chapter-body">
+      <p>路徑：設定 → <strong>授權</strong></p>
+      <h3>➕ 新增授權</h3>
+      <ol class="steps">
+        <li>點擊「<strong>新增</strong>」</li>
+        <li>掃描被授權人 QR Code，或輸入 Email</li>
+        <li>設定授權範圍（地點 / 分區）</li>
+        <li>選「永久授權」或指定到期日期</li>
+      </ol>
+      <div class="img-block phone-2">
+        <img src="images/app_image11.png" alt="授權列表與掃碼授權">
+        <div class="img-cap">左：授權列表　右：掃描分享授權</div>
+      </div>
+      <h3>🏷️ 授權狀態</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>狀態</th><th>說明</th></tr>
+          <tr><td><span class="badge badge-green">永久授權</span></td><td>長期有效，無期限</td></tr>
+          <tr><td><span class="badge badge-green">授權至 yyyy-mm-dd</span></td><td>到期自動失效</td></tr>
+          <tr><td><span class="badge badge-red">授權到期</span></td><td>需重新授權</td></tr>
+          <tr><td><span class="badge badge-gray">已停用</span></td><td>手動停用，可重新啟用</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 第8章 ── -->
+  <div class="chapter" id="ch8">
+    <button class="chapter-header" onclick="toggleChapter(this)">
+      <div class="ch-num">8</div>
+      <div class="ch-title">主機網路設定</div>
+      <div class="ch-arrow">▼</div>
+    </button>
+    <div class="chapter-body">
+      <p>路徑：設定 → 設備列表 → 主機 → <strong>網路設定</strong></p>
+      <h3>📶 Wi-Fi 無線網路</h3>
+      <ol class="steps">
+        <li>選「<strong>無線網路</strong>」</li>
+        <li>選擇 SSID → 輸入密碼 → 點「<strong>連接</strong>」</li>
+      </ol>
+      <div class="img-block phone-3">
+        <img src="images/app_image3.png" alt="網路連線方式選擇">
+        <div class="img-cap">連線方式選擇流程</div>
+      </div>
+      <div class="callout callout-warning">
+        <span class="callout-icon">⚠️</span>
+        <div class="callout-body">主機僅支援 <strong>2.4GHz</strong>，5GHz 路由器請切至 2.4GHz。</div>
+      </div>
+      <div class="img-block phone-2">
+        <img src="images/app_image5.png" alt="Wi-Fi 選擇與密碼">
+        <div class="img-cap">Wi-Fi 選擇與密碼輸入</div>
+      </div>
+      <h3>🔌 有線 Ethernet</h3>
+      <ul>
+        <li>選「<strong>有線網路</strong>」，網路線接 WAN Port</li>
+        <li>可設定 DHCP 或 Static IP</li>
+      </ul>
+      <h3>📱 4G LTE 行動網路</h3>
+      <ol class="steps">
+        <li>插入 Nano SIM 卡，選「<strong>行動網路</strong>」</li>
+        <li>設定 APN、使用者名稱、密碼、Pin</li>
+        <li>點「<strong>下一步</strong>」完成</li>
+      </ol>
+      <div class="callout callout-tip">
+        <span class="callout-icon">💡</span>
+        <div class="callout-body">LTE 僅在有線與 Wi-Fi 均斷線時自動啟用（備援機制）。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">附錄</div>
+
+  <!-- ── 第9章 ── -->
+  <div class="chapter" id="ch9">
+    <button class="chapter-header" onclick="toggleChapter(this)">
+      <div class="ch-num">9</div>
+      <div class="ch-title">硬體設備一覽</div>
+      <div class="ch-arrow">▼</div>
+    </button>
+    <div class="chapter-body">
+      <div class="hw-grid">
+        <div class="hw-card">
+          <h4>🖥️ SGW-10-1 保全主機</h4>
+          <div class="hw-meta">Type-C 供電（備電 1 小時）</div>
+          <p>三網備援（Wi-Fi / 有線 / LTE），整合感測器與攝影機</p>
+        </div>
+        <div class="hw-card">
+          <h4>💳 SCR-10-1 無線讀卡機</h4>
+          <div class="hw-meta">Type-C（電池 1 年）</div>
+          <p>刷卡布防 / 解防，螢幕顯示系統狀態與時間</p>
+        </div>
+        <div class="hw-card">
+          <h4>🚪 SDS-10-1 無線門磁</h4>
+          <div class="hw-meta">CR123A 電池（3 年）</div>
+          <p>偵測門窗開 / 關，觸發即時通知</p>
+        </div>
+        <div class="hw-card">
+          <h4>🔍 SPIR-10-1 PIR 偵測器</h4>
+          <div class="hw-meta">CR123A 電池（3 年）</div>
+          <p>被動紅外線偵測人員移動，廣角覆蓋</p>
+        </div>
+        <div class="hw-card">
+          <h4>🆘 SPB-10-1 緊急按鈕</h4>
+          <div class="hw-meta">CR123A 電池</div>
+          <p>按壓 5 秒觸發緊急警報，適合緊急求援</p>
+        </div>
+        <div class="hw-card">
+          <h4>🔧 SWDI-10-1 WDI 轉換器</h4>
+          <div class="hw-meta">24V 電源適配器</div>
+          <p>整合既有有線感測器，8 組乾接點輸入</p>
+        </div>
+      </div>
+      <h3>✅ 感測器共同特性</h3>
+      <ul>
+        <li><strong>Ultra Range</strong> 無線協定，通訊距離 &gt;2km（空曠）</li>
+        <li><strong>IP66</strong> 防水防塵，抗 UV 外殼</li>
+        <li><strong>防拆保護</strong>：拆機即觸發警報</li>
+        <li>支援 <strong>OTA 遠端韌體更新</strong></li>
+        <li>APP 掃描 QR Code 快速入網</li>
+        <li>LED 顯示連線 / 觸發 / 入網狀態</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ── 第10章 ── -->
+  <div class="chapter" id="ch10">
+    <button class="chapter-header" onclick="toggleChapter(this)">
+      <div class="ch-num">10</div>
+      <div class="ch-title">常見問題排除</div>
+      <div class="ch-arrow">▼</div>
+    </button>
+    <div class="chapter-body">
+      <h3>📱 APP 操作問題</h3>
+      <div class="faq-card">
+        <div class="faq-q">無法啟動保全</div>
+        <div class="faq-cause">原因：門磁未關閉或設備離線</div>
+        <div class="faq-fix">確認所有門窗已關閉，逐一確認清單中設備狀態後重試</div>
+      </div>
+      <div class="faq-card">
+        <div class="faq-q">攝影機畫面無法觀看</div>
+        <div class="faq-cause">原因：攝影機離線或網路異常</div>
+        <div class="faq-fix">確認電源與網路，點右上角重新整理，或重啟攝影機</div>
+      </div>
+      <div class="faq-card">
+        <div class="faq-q">APP 未收到推播通知</div>
+        <div class="faq-cause">原因：手機通知被關閉</div>
+        <div class="faq-fix">手機設定 → 通知 → SKS Spaces → 開啟允許通知</div>
+      </div>
+      <div class="faq-card">
+        <div class="faq-q">日誌頁面無資料</div>
+        <div class="faq-cause">原因：篩選條件過嚴或日期範圍不符</div>
+        <div class="faq-fix">取消所有篩選，擴大日期範圍後重新查詢</div>
+      </div>
+      <h3>🔧 硬體問題</h3>
+      <div class="faq-card">
+        <div class="faq-q">感測器無法入網（LED 持續閃）</div>
+        <div class="faq-cause">原因：電池不足或 QR Code 模糊</div>
+        <div class="faq-fix">更換 CR123A 電池；QR Code 模糊則開後蓋掃內蓋備用碼</div>
+      </div>
+      <div class="faq-card">
+        <div class="faq-q">緊急按鈕按下無反應</div>
+        <div class="faq-cause">原因：電池接觸不良或設備死機</div>
+        <div class="faq-fix">重新安裝電池；仍無反應則長按 Reset 10 秒恢復出廠後重新配對</div>
+      </div>
+      <div class="faq-card">
+        <div class="faq-q">讀卡機顯示「連線異常」</div>
+        <div class="faq-cause">原因：主機網路中斷或訊號干擾</div>
+        <div class="faq-fix">確認主機網路正常，縮短與主機距離；持續異常請聯絡客服</div>
+      </div>
+      <div class="faq-card">
+        <div class="faq-q">主機無法連接 Wi-Fi</div>
+        <div class="faq-cause">原因：密碼錯誤或路由器使用 5GHz</div>
+        <div class="faq-fix">重新執行 Wi-Fi 設定；5GHz 路由器請改用 2.4GHz</div>
+      </div>
+      <div class="callout callout-tip" style="margin-top:4px">
+        <span class="callout-icon">📞</span>
+        <div class="callout-body">聯絡新光保全客服時請提供：<strong>主機序號</strong>、<strong>發生時間</strong>、<strong>日誌截圖</strong>，以便快速協助。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>© 2026 新光保全股份有限公司</p>
+    <p style="margin-top:6px"><strong>V1.3</strong>（2026-04-23）：補全各章截圖，手機版獨立頁面</p>
+    <p><strong>V1.2</strong>（2026-04-23）：全面重排版，文字與截圖並排</p>
+    <p><strong>V1.0</strong>（2026-04-22）：首版發布</p>
+    <p style="margin-top:10px"><a href="index.html" style="color:var(--brand);text-decoration:none;font-weight:600">→ 切換至電腦版</a></p>
+  </div>
+</div>
+
+<script>
+// 折疊/展開章節
+function toggleChapter(btn) {
+  const ch = btn.closest('.chapter');
+  ch.classList.toggle('open');
+}
+
+// 從章節導覽列跳轉並展開
+function openChapter(id) {
+  const ch = document.getElementById(id);
+  if (!ch) return;
+  ch.classList.add('open');
+  setTimeout(() => ch.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+}
+
+// 搜尋功能
+const searchInput = document.getElementById('searchInput');
+const content = document.getElementById('manualContent');
+const noResult = document.getElementById('noResult');
+const chapters = content.querySelectorAll('.chapter');
+
+searchInput.addEventListener('input', function() {
+  const q = this.value.trim().toLowerCase();
+  document.getElementById('searchKeyword').textContent = q;
+  content.querySelectorAll('.highlight').forEach(el => { el.outerHTML = el.textContent; });
+  if (!q) {
+    chapters.forEach(c => { c.style.display = ''; });
+    noResult.style.display = 'none';
+    return;
+  }
+  let found = 0;
+  chapters.forEach(c => {
+    if (c.textContent.toLowerCase().includes(q)) {
+      c.style.display = '';
+      c.classList.add('open');
+      found++;
+      highlightText(c, q);
+    } else {
+      c.style.display = 'none';
+    }
+  });
+  noResult.style.display = found === 0 ? 'block' : 'none';
+});
+
+function highlightText(node, q) {
+  if (node.nodeType === 3) {
+    const idx = node.textContent.toLowerCase().indexOf(q);
+    if (idx >= 0) {
+      const span = document.createElement('mark');
+      span.className = 'highlight';
+      const range = document.createRange();
+      range.setStart(node, idx);
+      range.setEnd(node, idx + q.length);
+      range.surroundContents(span);
+    }
+  } else if (node.nodeType === 1 && !['SCRIPT','STYLE'].includes(node.tagName)) {
+    Array.from(node.childNodes).forEach(child => highlightText(child, q));
+  }
+}
+
+// 章節導覽列 active 狀態（IntersectionObserver）
+const navLinks = document.querySelectorAll('.chapter-nav a');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(a => a.classList.remove('active'));
+      const id = entry.target.id;
+      const link = document.querySelector(`.chapter-nav a[href="#${id}"]`);
+      if (link) {
+        link.classList.add('active');
+        link.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+    }
+  });
+}, { threshold: 0.3, rootMargin: '-120px 0px 0px 0px' });
+chapters.forEach(c => obs.observe(c));
+</script>
+</body>
+</html>
