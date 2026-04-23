@@ -16,22 +16,22 @@
       --text-muted: #6C757D;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-    body { font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Microsoft JhengHei", sans-serif; font-size: 17px; color: var(--text); background: var(--bg); line-height: 1.8; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Microsoft JhengHei", sans-serif; font-size: 20px; color: var(--text); background: var(--bg); line-height: 1.85; }
 
     /* ── Top header ── */
     .top-bar { background: var(--brand); color: white; padding: 14px 16px 10px; position: sticky; top: 0; z-index: 100; }
-    .top-bar-title { font-size: 18px; font-weight: 800; }
-    .top-bar-sub { font-size: 12px; opacity: 0.75; margin-top: 1px; }
+    .top-bar-title { font-size: 20px; font-weight: 800; }
+    .top-bar-sub { font-size: 14px; opacity: 0.75; margin-top: 1px; }
 
     /* ── Search ── */
     .search-bar { background: var(--surface); padding: 10px 14px; border-bottom: 1px solid var(--border); position: sticky; top: 56px; z-index: 99; }
-    .search-input { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: 24px; font-size: 16px; outline: none; font-family: inherit; background: #F5F7FA; }
+    .search-input { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: 24px; font-size: 18px; outline: none; font-family: inherit; background: #F5F7FA; }
     .search-input:focus { border-color: var(--brand); background: white; }
 
     /* ── Chapter nav tabs ── */
     .chapter-nav { background: var(--surface); border-bottom: 1px solid var(--border); overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; padding: 8px 14px; display: flex; gap: 7px; position: sticky; top: 108px; z-index: 98; scrollbar-width: none; }
     .chapter-nav::-webkit-scrollbar { display: none; }
-    .chapter-nav a { display: inline-flex; align-items: center; padding: 5px 13px; border-radius: 20px; background: var(--brand-light); color: var(--brand); text-decoration: none; font-size: 13px; font-weight: 700; flex-shrink: 0; border: 1.5px solid transparent; }
+    .chapter-nav a { display: inline-flex; align-items: center; padding: 6px 15px; border-radius: 20px; background: var(--brand-light); color: var(--brand); text-decoration: none; font-size: 15px; font-weight: 700; flex-shrink: 0; border: 1.5px solid transparent; }
     .chapter-nav a.active { background: var(--brand); color: white; }
 
     /* ── No result ── */
@@ -42,14 +42,14 @@
     .chapter-header { display: flex; align-items: center; gap: 12px; padding: 15px 16px; cursor: pointer; background: var(--surface); border: none; width: 100%; text-align: left; -webkit-user-select: none; user-select: none; }
     .chapter-header:active { background: var(--brand-light); }
     .ch-num { background: var(--brand); color: white; font-size: 13px; font-weight: 800; min-width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .ch-title { font-size: 18px; font-weight: 700; flex: 1; line-height: 1.3; }
+    .ch-title { font-size: 20px; font-weight: 700; flex: 1; line-height: 1.3; }
     .ch-arrow { font-size: 16px; color: var(--text-muted); transition: transform 0.22s; flex-shrink: 0; }
     .chapter.open .ch-arrow { transform: rotate(180deg); }
     .chapter-body { display: none; padding: 4px 16px 20px; border-top: 1px solid var(--border); }
     .chapter.open .chapter-body { display: block; }
 
     /* ── Typography ── */
-    h3 { font-size: 17px; font-weight: 700; margin: 18px 0 10px; color: var(--brand-dark); }
+    h3 { font-size: 19px; font-weight: 700; margin: 18px 0 10px; color: var(--brand-dark); }
     h3:first-child { margin-top: 14px; }
     p { margin-bottom: 11px; }
     ul, ol { padding-left: 22px; margin-bottom: 12px; }
@@ -75,13 +75,13 @@
     .callout-tip { background: #E8F5E9; border-left: 4px solid #388E3C; }
     .callout-warning { background: #FFF8E1; border-left: 4px solid #F9A825; }
     .callout-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
-    .callout-body { font-size: 16px; line-height: 1.7; }
+    .callout-body { font-size: 18px; line-height: 1.75; }
 
     /* ── Table ── */
     .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 10px 0; border-radius: 8px; }
-    table { width: 100%; border-collapse: collapse; font-size: 15px; min-width: 260px; }
-    th { background: var(--brand); color: white; font-weight: 600; text-align: left; padding: 9px 12px; }
-    td { padding: 9px 12px; border-bottom: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; font-size: 17px; min-width: 260px; }
+    th { background: var(--brand); color: white; font-weight: 600; text-align: left; padding: 11px 14px; }
+    td { padding: 11px 14px; border-bottom: 1px solid var(--border); }
     tr:last-child td { border-bottom: none; }
     tr:nth-child(even) td { background: #F8F9FA; }
 
@@ -94,15 +94,15 @@
     /* ── Hardware grid ── */
     .hw-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 10px 0; }
     .hw-card { background: #F5F7FA; border: 1px solid var(--border); border-radius: 10px; padding: 13px; }
-    .hw-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; color: var(--brand-dark); }
-    .hw-card .hw-meta { font-size: 12px; color: var(--text-muted); margin-bottom: 5px; }
-    .hw-card p { font-size: 13px; margin: 0; line-height: 1.5; }
+    .hw-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 4px; color: var(--brand-dark); }
+    .hw-card .hw-meta { font-size: 14px; color: var(--text-muted); margin-bottom: 5px; }
+    .hw-card p { font-size: 15px; margin: 0; line-height: 1.55; }
 
     /* ── FAQ ── */
     .faq-card { background: #FFFDE7; border: 1px solid #FDD835; border-radius: 10px; padding: 13px 15px; margin-bottom: 10px; }
-    .faq-q { font-size: 16px; font-weight: 700; margin-bottom: 5px; color: #5D4037; }
-    .faq-cause { font-size: 13px; color: var(--text-muted); margin-bottom: 4px; }
-    .faq-fix { font-size: 15px; line-height: 1.6; }
+    .faq-q { font-size: 18px; font-weight: 700; margin-bottom: 5px; color: #5D4037; }
+    .faq-cause { font-size: 15px; color: var(--text-muted); margin-bottom: 4px; }
+    .faq-fix { font-size: 17px; line-height: 1.65; }
 
     /* ── Search highlight ── */
     .highlight { background: #FFF176; border-radius: 2px; }
