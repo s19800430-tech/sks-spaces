@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SKS Spaces 快速使用手冊 V1.2</title>
+  <title>SKS Spaces 快速使用手冊 V1.3</title>
   <style>
     :root {
       --brand: #1565C0;
@@ -53,9 +53,11 @@
     /* ── Two-column row (text + image) ── */
     .row { display: grid; grid-template-columns: 1fr 340px; gap: 36px; align-items: start; }
     .row.img-left { grid-template-columns: 340px 1fr; }
+    .row.img-left-wide { grid-template-columns: 480px 1fr; }
     .row-text {}
     .row-img img { width: 100%; border-radius: 10px; border: 1px solid var(--border); box-shadow: 0 2px 10px rgba(0,0,0,0.07); }
     .img-cap { font-size: 13px; color: var(--text-muted); margin-top: 6px; text-align: center; }
+    .single-phone-wrap { max-width: 200px; margin: 0 auto; }
 
     /* ── Typography ── */
     h3 { font-size: 18px; font-weight: 700; margin: 20px 0 10px; color: var(--brand-dark); }
@@ -120,7 +122,7 @@
       .mobile-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: white; z-index: 50; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
       .mobile-header-title { font-weight: 700; color: var(--brand); font-size: 16px; }
       .hamburger { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--brand); }
-      .row, .row.img-left { grid-template-columns: 1fr; }
+      .row, .row.img-left, .row.img-left-wide { grid-template-columns: 1fr; }
       .hw-grid { grid-template-columns: 1fr 1fr; }
       .faq-grid { grid-template-columns: 1fr; }
     }
@@ -325,8 +327,6 @@
             <li>📷 圖示 → 點擊直接查看對應影像片段</li>
             <li>⚠️ 保全事件高亮標示，一眼辨識</li>
           </ul>
-        </div>
-        <div class="row-text">
           <h3>📌 紀錄內容</h3>
           <ul>
             <li>保全啟用 / 解除（含操作者與時間）</li>
@@ -338,6 +338,12 @@
           <div class="callout callout-tip">
             <span class="callout-icon">💡</span>
             <div class="callout-body">日誌無資料時，先取消所有篩選條件並擴大日期範圍再查詢。</div>
+          </div>
+        </div>
+        <div class="row-img">
+          <div class="single-phone-wrap">
+            <img src="images/app_image9.png" alt="日誌事件列表">
+            <div class="img-cap">日誌事件列表</div>
           </div>
         </div>
       </div>
@@ -362,6 +368,14 @@
             <li>等候約 1.5 分鐘，LED 停止閃爍即成功</li>
           </ol>
         </div>
+        <div class="row-img">
+          <img src="images/gwt_image1.png" alt="SKS 保全主機（GWT）">
+          <div class="img-cap">保全主機（GWT）正面與接口</div>
+          <img src="images/sds_image1.png" alt="門磁感測器（SDS）" style="margin-top:14px">
+          <div class="img-cap">門磁感測器（SDS）</div>
+        </div>
+      </div>
+      <div class="row" style="margin-top:24px">
         <div class="row-text">
           <h3>📷 新增攝影機（IPcam）</h3>
           <ol class="steps">
@@ -380,6 +394,10 @@
             <div class="callout-body">QR Code 模糊時，開後蓋掃內蓋備用 QR Code。<br>首頁右上角 → 拓樸圖示，可視化查看所有設備架構。</div>
           </div>
         </div>
+        <div class="row-img">
+          <img src="images/swdi_image1.png" alt="WDI 有線無線轉換器">
+          <div class="img-cap">WDI 有線無線轉換器（8 路乾接點）</div>
+        </div>
       </div>
     </section>
 
@@ -396,8 +414,6 @@
             <li>設定授權範圍（地點 / 分區）</li>
             <li>選「永久授權」或指定到期日期</li>
           </ol>
-        </div>
-        <div class="row-text">
           <h3>🏷️ 授權狀態</h3>
           <table>
             <tr><th>狀態</th><th>說明</th></tr>
@@ -407,6 +423,10 @@
             <tr><td><span class="badge badge-gray">已停用</span></td><td>手動停用，可重新啟用</td></tr>
           </table>
         </div>
+        <div class="row-img">
+          <img src="images/app_image11.png" alt="授權列表與掃碼授權">
+          <div class="img-cap">左：授權列表　右：掃描分享授權</div>
+        </div>
       </div>
     </section>
 
@@ -414,7 +434,7 @@
     <section class="section" id="s8">
       <div class="sec-head"><div class="sec-num">8</div><div class="sec-title">主機網路設定</div></div>
       <p>路徑：設定 → 設備列表 → 主機 → <strong>網路設定</strong></p>
-      <div class="row img-left">
+      <div class="row img-left-wide">
         <div class="row-img">
           <img src="images/app_image3.png" alt="網路連線方式選擇">
           <div class="img-cap">連線方式選擇畫面</div>
